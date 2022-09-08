@@ -1,0 +1,29 @@
+[package]
+name = "auth-1"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = "4"
+actix-cors = "0"
+anyhow = "1"
+async-trait = "0"
+chrono = { version = "0", features = ["serde"] }
+config = "0"
+dotenv = "0"
+env_logger = "0"
+futures = "0"
+jsonwebtoken = "8"
+lazy_static = "1"
+rand = "0"
+rust-argon2 = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sqlx = { version = "0", features = [
+  "runtime-tokio-rustls",
+  "postgres",
+  "offline",
+  "chrono",
+] }
+ulid = { version = "1", features = ["serde"] }
+validator = { version = "0", features = ["derive"] }
