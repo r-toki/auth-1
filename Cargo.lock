@@ -311,6 +311,7 @@ dependencies = [
  "jsonwebtoken",
  "lazy_static",
  "rand_core",
+ "regex",
  "serde",
  "serde_json",
  "sqlx",
