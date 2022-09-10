@@ -48,7 +48,7 @@ pub struct CreateTokensInput {
     pub email: String,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Tokens {
     pub access_token: String,
     pub refresh_token: String,

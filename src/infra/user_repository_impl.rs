@@ -3,7 +3,7 @@ use async_trait::async_trait;
 use sqlx::{query, query_as, PgPool};
 use std::sync::Arc;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct UserRepositoryImpl {
     pool: Arc<PgPool>,
 }

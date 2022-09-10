@@ -6,37 +6,35 @@ use crate::lib::password_hashing::{hash, verify};
 
 #[derive(Debug)]
 pub struct SignUpInput {
-    email: String,
-    password: String,
+    pub email: String,
+    pub password: String,
 }
 
 #[derive(Debug)]
 pub struct SingInInput {
-    email: String,
-    password: String,
+    pub email: String,
+    pub password: String,
 }
 
 #[derive(Debug)]
 pub struct SignOutInput {
-    claims: Claims,
+    pub claims: Claims,
 }
 
 #[derive(Debug)]
 pub struct RefreshInput {
-    token: String,
-    claims: Claims,
+    pub token: String,
+    pub claims: Claims,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct AuthService<R: UserRepository> {
     user_repository: Arc<R>,
 }
 
 impl<R: UserRepository> AuthService<R> {
-    pub fn new(user_repository: R) -> Self {
-        Self {
-            user_repository: Arc::from(user_repository),
-        }
+    pub fn new(user_repository: Arc<R>) -> Self {
+        Self { user_repository }
     }
 
     pub async fn sign_up(&self, input: SignUpInput) -> anyhow::Result<Tokens> {

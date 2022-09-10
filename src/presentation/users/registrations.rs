@@ -1,8 +1,11 @@
+use crate::application::auth_service::SignUpInput;
+use crate::context::Context;
+use crate::lib::jwt::Tokens;
 use crate::lib::jwt_extractor::AccessTokenDecoded;
 use crate::presentation;
 use actix_web::{
     delete, post,
-    web::{Json, ServiceConfig},
+    web::{Data, Json, ServiceConfig},
     Responder,
 };
 use serde::Deserialize;
@@ -14,13 +17,24 @@ pub fn init(cfg: &mut ServiceConfig) {
 
 #[derive(Debug, Deserialize)]
 struct CreateForm {
-    email: String,
-    password: String,
+    pub email: String,
+    pub password: String,
 }
 
 #[post("/users/registrations")]
-async fn create(form: Json<CreateForm>) -> presentation::Result<impl Responder> {
-    Ok(Json(()))
+async fn create(
+    context: Data<Context>,
+    form: Json<CreateForm>,
+) -> presentation::Result<Json<Tokens>> {
+    let tokens = context
+        .auth_service
+        .sign_up(SignUpInput {
+            email: form.email.clone(),
+            password: form.password.clone(),
+        })
+        .await?;
+
+    Ok(Json(tokens))
 }
 
 #[delete("/users/registrations")]
