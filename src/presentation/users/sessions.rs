@@ -14,13 +14,13 @@ pub fn init(cfg: &mut ServiceConfig) {
 }
 
 #[derive(Debug, Deserialize)]
-struct Create {
+struct CreateForm {
     email: String,
     password: String,
 }
 
 #[post("/users/sessions")]
-async fn create(form: Json<Create>) -> presentation::Result<impl Responder> {
+async fn create(form: Json<CreateForm>) -> presentation::Result<impl Responder> {
     Ok(Json(()))
 }
 
