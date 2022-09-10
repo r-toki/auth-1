@@ -57,7 +57,9 @@ impl User {
         Ok(())
     }
 
-    pub fn unset_hashed_refresh_token(&mut self) {
+    pub fn unset_hashed_refresh_token(&mut self) -> anyhow::Result<()> {
         self.hashed_refresh_token = None;
+        self.validate()?;
+        Ok(())
     }
 }

@@ -11,7 +11,7 @@ lazy_static! {
     static ref BEARER_REGEXP: Regex = Regex::new(r"^Bearer\s(.*)$").unwrap();
 }
 
-pub struct BearerToken(Option<String>);
+pub struct BearerToken(pub Option<String>);
 
 impl FromRequest for BearerToken {
     type Error = actix_web::Error;
@@ -26,7 +26,7 @@ impl FromRequest for BearerToken {
     }
 }
 
-pub struct AccessTokenDecoded(Option<Claims>);
+pub struct AccessTokenDecoded(pub Option<Claims>);
 
 impl FromRequest for AccessTokenDecoded {
     type Error = actix_web::Error;
@@ -49,7 +49,7 @@ impl FromRequest for AccessTokenDecoded {
     }
 }
 
-pub struct RefreshTokenDecoded(Option<Claims>);
+pub struct RefreshTokenDecoded(pub Option<Claims>);
 
 impl FromRequest for RefreshTokenDecoded {
     type Error = actix_web::Error;

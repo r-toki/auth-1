@@ -1,5 +1,5 @@
 use crate::application::auth_service::AuthService;
-use crate::infra::UserRepositoryImpl;
+use crate::infra::user_repository_impl::UserRepositoryImpl;
 use sqlx::PgPool;
 use std::sync::Arc;
 

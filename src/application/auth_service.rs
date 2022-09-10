@@ -1,8 +1,7 @@
-use std::sync::Arc;
-
 use crate::domain::user::{self, SetHashedRefreshTokenInput, User, UserRepository};
 use crate::lib::jwt::{create_tokens, Claims, CreateTokensInput, Tokens};
 use crate::lib::password_hashing::{hash, verify};
+use std::sync::Arc;
 
 #[derive(Debug)]
 pub struct SignUpInput {
