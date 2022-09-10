@@ -1,0 +1,99 @@
+{
+  "db": "PostgreSQL",
+  "1f0e3e778efda341f6a0b66912e9715431f601d076dcc3568744fd191c70cf1d": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text",
+          "Text",
+          "Text",
+          "Timestamptz",
+          "Timestamptz"
+        ]
+      }
+    },
+    "query": "\nINSERT INTO users ( id, email, hashed_password, hashed_refresh_token, created_at, updated_at )\nVALUES ( $1, $2, $3, $4, $5, $6 )\n            "
+  },
+  "47f790cdec2c071544cd8a31cd223fd7462996d4e78bc33c6d767ac6ba6a252f": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text",
+          "Text",
+          "Timestamptz",
+          "Timestamptz",
+          "Text"
+        ]
+      }
+    },
+    "query": "\nUPDATE users\nSET email = $1, hashed_password = $2, hashed_refresh_token = $3, created_at = $4, updated_at = $5\nWHERE id = $6\n            "
+  },
+  "629d729ff9dd599e1101824eb4182d40df3440a8ed8d74ed4b8ca0b2bec8afac": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Text"
+        },
+        {
+          "name": "email",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "hashed_password",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "hashed_refresh_token",
+          "ordinal": 3,
+          "type_info": "Text"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 4,
+          "type_info": "Timestamptz"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 5,
+          "type_info": "Timestamptz"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "\nSELECT * FROM users\nWHERE id = $1\n        "
+  },
+  "8ccc876bb58ce6bcc803883f0f94568f654ce11a2dbeddd66e536124e0cc3bc9": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "\nDELETE FROM users\nWHERE id = $1\n            "
+  }
+}

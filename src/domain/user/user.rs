@@ -1,5 +1,3 @@
-
-use anyhow::Result;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use ulid::Ulid;
@@ -29,9 +27,9 @@ impl User {
         email: &str,
         hashed_password: &str,
         hashed_refresh_token: Option<&str>,
-    ) -> Result<Self> {
+    ) -> anyhow::Result<Self> {
         let now = Utc::now();
-        let user = Self  {
+        let user = Self {
             id: Ulid::new().to_string(),
             email: email.to_string(),
             hashed_password: hashed_password.to_string(),
@@ -41,5 +39,15 @@ impl User {
         };
         user.validate()?;
         Ok(user)
+    }
+
+    pub fn set_hashed_refresh_token(&mut self, hashed_refresh_token: &str) -> anyhow::Result<()> {
+        self.hashed_refresh_token = Some(hashed_refresh_token.to_string());
+        self.validate()?;
+        Ok(())
+    }
+
+    pub fn unset_hashed_refresh_token(&mut self) {
+        self.hashed_refresh_token = None;
     }
 }
