@@ -1,5 +1,5 @@
 use crate::lib::jwt_extractor::{AccessTokenDecoded, BearerToken, RefreshTokenDecoded};
-use crate::presentation::result::Result;
+use crate::presentation;
 use actix_web::{
     delete, patch, post,
     web::{Json, ServiceConfig},
@@ -20,7 +20,7 @@ struct Create {
 }
 
 #[post("/users/sessions")]
-async fn create(form: Json<Create>) -> Result<impl Responder> {
+async fn create(form: Json<Create>) -> presentation::Result<impl Responder> {
     Ok(Json(()))
 }
 
@@ -28,11 +28,11 @@ async fn create(form: Json<Create>) -> Result<impl Responder> {
 async fn update(
     bearer_token: BearerToken,
     refresh_token_decoded: RefreshTokenDecoded,
-) -> Result<impl Responder> {
+) -> presentation::Result<impl Responder> {
     Ok(Json(()))
 }
 
 #[delete("/users/sessions")]
-async fn destroy(access_token_decoded: AccessTokenDecoded) -> Result<impl Responder> {
+async fn destroy(access_token_decoded: AccessTokenDecoded) -> presentation::Result<impl Responder> {
     Ok(Json(()))
 }

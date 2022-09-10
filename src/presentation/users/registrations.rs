@@ -1,5 +1,5 @@
 use crate::lib::jwt_extractor::AccessTokenDecoded;
-use crate::presentation::result::Result;
+use crate::presentation;
 use actix_web::{
     delete, post,
     web::{Json, ServiceConfig},
@@ -19,11 +19,11 @@ struct Create {
 }
 
 #[post("/users/registrations")]
-async fn create(form: Json<Create>) -> Result<impl Responder> {
+async fn create(form: Json<Create>) -> presentation::Result<impl Responder> {
     Ok(Json(()))
 }
 
 #[delete("/users/registrations")]
-async fn destroy(access_token_decoded: AccessTokenDecoded) -> Result<impl Responder> {
+async fn destroy(access_token_decoded: AccessTokenDecoded) -> presentation::Result<impl Responder> {
     Ok(Json(()))
 }
