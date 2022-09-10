@@ -6,6 +6,7 @@ use serde::Deserialize;
 pub struct Config {
     pub host: String,
     pub port: String,
+    pub database_url: String,
     pub access_token_secret: String,
     pub refresh_token_secret: String,
 }
