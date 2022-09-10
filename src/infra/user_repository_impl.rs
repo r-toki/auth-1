@@ -1,4 +1,4 @@
-use crate::domain::{User, UserRepository};
+use crate::domain::user::{User, UserRepository};
 use async_trait::async_trait;
 use sqlx::{query, query_as, PgPool};
 use std::sync::Arc;
