@@ -11,6 +11,7 @@ argon2 = "0.4"
 async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
 config = "0.13"
+derive-new = "0.5"
 dotenv = "0.15"
 env_logger = "0.9"
 futures = "0.3"

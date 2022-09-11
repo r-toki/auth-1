@@ -3,15 +3,18 @@ use argon2::{
     Argon2,
 };
 
-pub fn hash(password: &str) -> anyhow::Result<String, argon2::password_hash::Error> {
+pub fn hash(password: &str) -> anyhow::Result<String> {
     let salt = SaltString::generate(&mut OsRng);
     let hashed_password = Argon2::default()
-        .hash_password(password.as_bytes(), &salt)?
+        .hash_password(password.as_bytes(), &salt)
+        .map_err(|_| anyhow::anyhow!(""))?
         .to_string();
     Ok(hashed_password)
 }
 
-pub fn verify(password: &str, hashed_password: &str) -> Result<(), argon2::password_hash::Error> {
-    let hashed_password = PasswordHash::new(&hashed_password)?;
-    Argon2::default().verify_password(password.as_bytes(), &hashed_password)
+pub fn verify(password: &str, hashed_password: &str) -> anyhow::Result<()> {
+    let hashed_password = PasswordHash::new(&hashed_password).map_err(|_| anyhow::anyhow!(""))?;
+    Argon2::default()
+        .verify_password(password.as_bytes(), &hashed_password)
+        .map_err(|_| anyhow::anyhow!(""))
 }
