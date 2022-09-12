@@ -1,5 +1,5 @@
-use crate::domain::user::{self, SetHashedRefreshTokenInput, User, UserRepository};
-use crate::lib::jwt::{create_tokens, Claims, CreateTokensInput, Tokens};
+use crate::domain::user::{User, UserRepository};
+use crate::lib::jwt::{create_tokens, Claims, Tokens};
 use crate::lib::password_hashing::{hash, verify};
 use std::sync::Arc;
 
@@ -37,21 +37,12 @@ impl<R: UserRepository> AuthService<R> {
     }
 
     pub async fn sign_up(&self, input: SignUpInput) -> anyhow::Result<Tokens> {
-        let mut user = User::new(user::NewInput {
-            email: input.email,
-            hashed_password: hash(&input.password).unwrap(),
-        })?;
+        let hashed_password = hash(&input.password)?;
+        let mut user = User::new(&input.email, &hashed_password)?;
 
-        let tokens = create_tokens(CreateTokensInput {
-            id: user.id.clone(),
-            email: user.email.clone(),
-        })?;
-
-        user.set_hashed_refresh_token({
-            SetHashedRefreshTokenInput {
-                hashed_refresh_token: hash(&tokens.refresh_token).unwrap(),
-            }
-        })?;
+        let tokens = create_tokens(&user.id, &user.email)?;
+        let hashed_refresh_token = hash(&tokens.refresh_token)?;
+        user.set_hashed_refresh_token(Some(hashed_refresh_token))?;
 
         self.user_repository.insert(user).await?;
 

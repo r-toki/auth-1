@@ -3,17 +3,6 @@ use serde::{Deserialize, Serialize};
 use ulid::Ulid;
 use validator::Validate;
 
-#[derive(Debug)]
-pub struct NewInput {
-    pub email: String,
-    pub hashed_password: String,
-}
-
-#[derive(Debug)]
-pub struct SetHashedRefreshTokenInput {
-    pub hashed_refresh_token: String,
-}
-
 #[derive(Debug, Serialize, Deserialize, Validate)]
 pub struct User {
     #[validate(length(min = 1))]
@@ -34,12 +23,12 @@ pub struct User {
 }
 
 impl User {
-    pub fn new(input: NewInput) -> anyhow::Result<Self> {
+    pub fn new(email: &str, hashed_password: &str) -> anyhow::Result<Self> {
         let now = Utc::now();
         let user = Self {
             id: Ulid::new().to_string(),
-            email: input.email,
-            hashed_password: input.hashed_password,
+            email: email.to_owned(),
+            hashed_password: hashed_password.to_owned(),
             hashed_refresh_token: None,
             created_at: now,
             updated_at: now,
@@ -50,15 +39,9 @@ impl User {
 
     pub fn set_hashed_refresh_token(
         &mut self,
-        input: SetHashedRefreshTokenInput,
+        hashed_refresh_token: Option<String>,
     ) -> anyhow::Result<()> {
-        self.hashed_refresh_token = Some(input.hashed_refresh_token);
-        self.validate()?;
-        Ok(())
-    }
-
-    pub fn unset_hashed_refresh_token(&mut self) -> anyhow::Result<()> {
-        self.hashed_refresh_token = None;
+        self.hashed_refresh_token = hashed_refresh_token;
         self.validate()?;
         Ok(())
     }

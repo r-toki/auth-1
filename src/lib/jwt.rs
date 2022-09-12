@@ -42,28 +42,22 @@ impl Claims {
     }
 }
 
-#[derive(Debug)]
-pub struct CreateTokensInput {
-    pub id: String,
-    pub email: String,
-}
-
 #[derive(Debug, Serialize)]
 pub struct Tokens {
     pub access_token: String,
     pub refresh_token: String,
 }
 
-pub fn create_tokens(input: CreateTokensInput) -> anyhow::Result<Tokens> {
+pub fn create_tokens(id: &str, email: &str) -> anyhow::Result<Tokens> {
     let access_token_claims = Claims::new_for_access_token(NewForAccessTokenInput {
-        id: input.id.clone(),
-        email: input.email.clone(),
+        id: id.to_owned(),
+        email: email.to_owned(),
     });
     let access_token = encode_access_token(access_token_claims)?;
 
     let refresh_token_claims = Claims::new_for_refresh_token(NewForRefreshTokenInput {
-        id: input.id.clone(),
-        email: input.email.clone(),
+        id: id.to_owned(),
+        email: email.to_owned(),
     });
     let refresh_token = encode_refresh_token(refresh_token_claims)?;
 
