@@ -1,5 +1,4 @@
-use crate::lib::auth::Auth;
-use crate::lib::jwt::Claims;
+use crate::lib::jwt::{Claims, Auth};
 use crate::lib::jwt::{decode_access_token, decode_refresh_token};
 use actix_web::{http::header, FromRequest};
 use anyhow::Result;

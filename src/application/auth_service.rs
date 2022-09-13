@@ -1,6 +1,5 @@
 use crate::domain::user::{User, UserRepository};
-use crate::lib::auth::Auth;
-use crate::lib::jwt::{generate_tokens, Tokens};
+use crate::lib::jwt::{generate_tokens, Auth, Tokens};
 use crate::lib::password_hashing::hash;
 use std::sync::Arc;
 

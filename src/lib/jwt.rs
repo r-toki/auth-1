@@ -1,8 +1,13 @@
-use crate::{domain::user, lib::config::CONFIG};
+use crate::lib::config::CONFIG;
 use chrono::{Duration, Utc};
 use derive_new::new;
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
+
+#[derive(new, Debug)]
+pub struct Auth {
+    pub user_id: String,
+}
 
 #[derive(new, Debug, Serialize, Deserialize)]
 pub struct Claims {
