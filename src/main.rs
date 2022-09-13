@@ -1,12 +1,12 @@
 mod application;
-mod context;
 mod domain;
-mod infra;
+mod infrastructure;
 mod lib;
+mod module;
 mod presentation;
 
-use crate::context::Context;
 use crate::lib::config::CONFIG;
+use crate::module::Modules;
 use actix_web::{web::Data, App, HttpServer};
 use dotenv::dotenv;
 use sqlx::PgPool;
@@ -23,11 +23,11 @@ async fn main() -> std::io::Result<()> {
 
     let pool = PgPool::connect(database_url).await.unwrap();
 
-    let context = Context::new(pool);
+    let modules = Modules::new(pool);
 
     HttpServer::new(move || {
         App::new()
-            .app_data(Data::new(context.clone()))
+            .app_data(Data::new(modules.clone()))
             .configure(presentation::init)
     })
     .bind(format!("{}:{}", host, port))?

@@ -1,11 +1,10 @@
-use crate::context::Context;
 use crate::lib::jwt::Tokens;
 use crate::lib::jwt_extractor::AccessTokenDecoded;
+use crate::module::Modules;
 use crate::presentation;
 use actix_web::{
     delete, post,
     web::{Data, Json, ServiceConfig},
-    Responder,
 };
 use serde::Deserialize;
 
@@ -22,10 +21,10 @@ struct CreateForm {
 
 #[post("/users/registrations")]
 async fn create(
-    context: Data<Context>,
+    modules: Data<Modules>,
     form: Json<CreateForm>,
 ) -> presentation::Result<Json<Tokens>> {
-    let tokens = context
+    let tokens = modules
         .auth_service
         .sign_up(&form.email, &form.password)
         .await?;
@@ -34,6 +33,14 @@ async fn create(
 }
 
 #[delete("/users/registrations")]
-async fn destroy(access_token_decoded: AccessTokenDecoded) -> presentation::Result<impl Responder> {
+async fn destroy(
+    modules: Data<Modules>,
+    access_token_decoded: AccessTokenDecoded,
+) -> presentation::Result<Json<()>> {
+    modules
+        .auth_service
+        .delete_user(access_token_decoded.into())
+        .await?;
+
     Ok(Json(()))
 }

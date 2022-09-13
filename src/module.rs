@@ -1,14 +1,14 @@
 use crate::application::auth_service::AuthService;
-use crate::infra::user_repository_impl::UserRepositoryImpl;
+use crate::infrastructure::user_repository_impl::UserRepositoryImpl;
 use sqlx::PgPool;
 use std::sync::Arc;
 
 #[derive(Debug, Clone)]
-pub struct Context {
+pub struct Modules {
     pub auth_service: AuthService<UserRepositoryImpl>,
 }
 
-impl Context {
+impl Modules {
     pub fn new(pool: PgPool) -> Self {
         let pool = Arc::new(pool);
 
@@ -16,6 +16,6 @@ impl Context {
 
         let auth_service = AuthService::new(user_repository.clone());
 
-        Context { auth_service }
+        Modules { auth_service }
     }
 }

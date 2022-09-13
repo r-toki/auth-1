@@ -1,4 +1,5 @@
 use crate::domain::user::{User, UserRepository};
+use crate::lib::auth::Auth;
 use crate::lib::jwt::{generate_tokens, Tokens};
 use crate::lib::password_hashing::hash;
 use std::sync::Arc;
@@ -32,5 +33,9 @@ impl<R: UserRepository> AuthService<R> {
 
     pub fn refresh(&self) {}
 
-    pub fn delete_user(&self) {}
+    pub async fn delete_user(&self, auth: Auth) -> anyhow::Result<()> {
+        self.user_repository.delete(&auth.user_id).await?;
+
+        Ok(())
+    }
 }
