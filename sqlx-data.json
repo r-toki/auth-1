@@ -1,39 +1,5 @@
 {
   "db": "PostgreSQL",
-  "1f0e3e778efda341f6a0b66912e9715431f601d076dcc3568744fd191c70cf1d": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Text",
-          "Text",
-          "Text",
-          "Timestamptz",
-          "Timestamptz"
-        ]
-      }
-    },
-    "query": "\nINSERT INTO users ( id, email, hashed_password, hashed_refresh_token, created_at, updated_at )\nVALUES ( $1, $2, $3, $4, $5, $6 )\n            "
-  },
-  "47f790cdec2c071544cd8a31cd223fd7462996d4e78bc33c6d767ac6ba6a252f": {
-    "describe": {
-      "columns": [],
-      "nullable": [],
-      "parameters": {
-        "Left": [
-          "Text",
-          "Text",
-          "Text",
-          "Timestamptz",
-          "Timestamptz",
-          "Text"
-        ]
-      }
-    },
-    "query": "\nUPDATE users\nSET email = $1, hashed_password = $2, hashed_refresh_token = $3, created_at = $4, updated_at = $5\nWHERE id = $6\n            "
-  },
   "629d729ff9dd599e1101824eb4182d40df3440a8ed8d74ed4b8ca0b2bec8afac": {
     "describe": {
       "columns": [
@@ -145,5 +111,22 @@
       }
     },
     "query": "\nSELECT * FROM users\nWHERE email = $1\n            "
+  },
+  "de5d7be785b46dae3e8d3ece8b5a0b2d0853068b664c158ff58f41f38bb3a679": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text",
+          "Text",
+          "Text",
+          "Timestamptz",
+          "Timestamptz"
+        ]
+      }
+    },
+    "query": "\nINSERT INTO users ( id, email, hashed_password, hashed_refresh_token, created_at, updated_at )\nVALUES ( $1, $2, $3, $4, $5, $6 )\nON CONFLICT ( id )\nDO UPDATE\nSET email = $2, hashed_password = $3, hashed_refresh_token = $4, created_at = $5, updated_at = $6\n            "
   }
 }

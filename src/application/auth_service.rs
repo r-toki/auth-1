@@ -20,7 +20,7 @@ impl<R: UserRepository> AuthService<R> {
         let tokens = generate_tokens(&user.id)?;
         let hashed_refresh_token = hash(&tokens.refresh_token)?;
         user.set_hashed_refresh_token(Some(hashed_refresh_token))?;
-        self.user_repository.insert(user).await?;
+        self.user_repository.save(user).await?;
 
         Ok(tokens)
     }
@@ -32,7 +32,7 @@ impl<R: UserRepository> AuthService<R> {
         let tokens = generate_tokens(&user.id)?;
         let hashed_refresh_token = hash(&tokens.refresh_token)?;
         user.set_hashed_refresh_token(Some(hashed_refresh_token))?;
-        self.user_repository.update(user).await?;
+        self.user_repository.save(user).await?;
 
         Ok(tokens)
     }
@@ -40,7 +40,7 @@ impl<R: UserRepository> AuthService<R> {
     pub async fn sign_out(&self, auth: Auth) -> anyhow::Result<()> {
         let mut user = self.user_repository.find_one(&auth.user_id).await?;
         user.set_hashed_refresh_token(None)?;
-        self.user_repository.update(user).await?;
+        self.user_repository.save(user).await?;
 
         Ok(())
     }
@@ -56,7 +56,7 @@ impl<R: UserRepository> AuthService<R> {
         let tokens = generate_tokens(&user.id)?;
         let hashed_refresh_token = hash(&tokens.refresh_token)?;
         user.set_hashed_refresh_token(Some(hashed_refresh_token))?;
-        self.user_repository.update(user).await?;
+        self.user_repository.save(user).await?;
 
         Ok(tokens)
     }
