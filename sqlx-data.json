@@ -95,5 +95,55 @@
       }
     },
     "query": "\nDELETE FROM users\nWHERE id = $1\n            "
+  },
+  "dcc88d00e633c39e17be32dbc200893cc8e28b1ef7e945ae55e6560160b99cc2": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Text"
+        },
+        {
+          "name": "email",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "hashed_password",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "hashed_refresh_token",
+          "ordinal": 3,
+          "type_info": "Text"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 4,
+          "type_info": "Timestamptz"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 5,
+          "type_info": "Timestamptz"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "\nSELECT * FROM users\nWHERE email = $1\n            "
   }
 }

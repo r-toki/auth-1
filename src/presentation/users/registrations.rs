@@ -34,8 +34,8 @@ async fn create(
 
 #[delete("/users/registrations")]
 async fn destroy(
-    modules: Data<Modules>,
     access_token_decoded: AccessTokenDecoded,
+    modules: Data<Modules>,
 ) -> presentation::Result<Json<()>> {
     modules
         .auth_service

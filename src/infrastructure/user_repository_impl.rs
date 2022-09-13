@@ -27,6 +27,22 @@ WHERE id = $1
         )
         .fetch_one(&*self.pool)
         .await?;
+
+        Ok(user)
+    }
+
+    async fn find_one_by_email(&self, email: &str) -> anyhow::Result<User> {
+        let user = query_as!(
+            User,
+            r#"
+SELECT * FROM users
+WHERE email = $1
+            "#,
+            email
+        )
+        .fetch_one(&*self.pool)
+        .await?;
+
         Ok(user)
     }
 
@@ -45,6 +61,7 @@ VALUES ( $1, $2, $3, $4, $5, $6 )
         )
         .execute(&*self.pool)
         .await?;
+
         Ok(())
     }
 
@@ -64,6 +81,7 @@ WHERE id = $6
         )
         .execute(&*self.pool)
         .await?;
+
         Ok(())
     }
 
@@ -77,6 +95,7 @@ WHERE id = $1
         )
         .execute(&*self.pool)
         .await?;
+
         Ok(())
     }
 }
