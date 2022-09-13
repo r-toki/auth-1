@@ -1,4 +1,3 @@
-use crate::application::auth_service::SignUpInput;
 use crate::context::Context;
 use crate::lib::jwt::Tokens;
 use crate::lib::jwt_extractor::AccessTokenDecoded;
@@ -28,10 +27,7 @@ async fn create(
 ) -> presentation::Result<Json<Tokens>> {
     let tokens = context
         .auth_service
-        .sign_up(SignUpInput {
-            email: form.email.clone(),
-            password: form.password.clone(),
-        })
+        .sign_up(&form.email, &form.password)
         .await?;
 
     Ok(Json(tokens))

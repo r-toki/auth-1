@@ -1,4 +1,3 @@
-pub mod authenticate;
 pub mod config;
 pub mod jwt;
 pub mod jwt_extractor;

@@ -1,30 +1,7 @@
 use crate::domain::user::{User, UserRepository};
-use crate::lib::jwt::{create_tokens, Claims, Tokens};
-use crate::lib::password_hashing::{hash, verify};
+use crate::lib::jwt::{generate_tokens, Tokens};
+use crate::lib::password_hashing::hash;
 use std::sync::Arc;
-
-#[derive(Debug)]
-pub struct SignUpInput {
-    pub email: String,
-    pub password: String,
-}
-
-#[derive(Debug)]
-pub struct SingInInput {
-    pub email: String,
-    pub password: String,
-}
-
-#[derive(Debug)]
-pub struct SignOutInput {
-    pub claims: Claims,
-}
-
-#[derive(Debug)]
-pub struct RefreshInput {
-    pub token: String,
-    pub claims: Claims,
-}
 
 #[derive(Debug, Clone)]
 pub struct AuthService<R: UserRepository> {
@@ -36,11 +13,11 @@ impl<R: UserRepository> AuthService<R> {
         Self { user_repository }
     }
 
-    pub async fn sign_up(&self, input: SignUpInput) -> anyhow::Result<Tokens> {
-        let hashed_password = hash(&input.password)?;
-        let mut user = User::new(&input.email, &hashed_password)?;
+    pub async fn sign_up(&self, email: &str, password: &str) -> anyhow::Result<Tokens> {
+        let hashed_password = hash(&password)?;
+        let mut user = User::new(email, &hashed_password)?;
 
-        let tokens = create_tokens(&user.id, &user.email)?;
+        let tokens = generate_tokens(&user.id)?;
         let hashed_refresh_token = hash(&tokens.refresh_token)?;
         user.set_hashed_refresh_token(Some(hashed_refresh_token))?;
 
@@ -49,19 +26,11 @@ impl<R: UserRepository> AuthService<R> {
         Ok(tokens)
     }
 
-    pub fn sign_in(&self) {
-        todo!()
-    }
+    pub fn sign_in(&self) {}
 
-    pub fn sign_out(&self) {
-        todo!()
-    }
+    pub fn sign_out(&self) {}
 
-    pub fn refresh(&self) {
-        todo!()
-    }
+    pub fn refresh(&self) {}
 
-    pub fn delete_user(&self) {
-        todo!()
-    }
+    pub fn delete_user(&self) {}
 }

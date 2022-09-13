@@ -11,7 +11,7 @@ lazy_static! {
     static ref BEARER_REGEXP: Regex = Regex::new(r"^Bearer\s(.*)$").unwrap();
 }
 
-pub struct BearerToken(pub Option<String>);
+pub struct BearerToken(pub String);
 
 impl FromRequest for BearerToken {
     type Error = actix_web::Error;
@@ -20,8 +20,11 @@ impl FromRequest for BearerToken {
     fn from_request(req: &actix_web::HttpRequest, _: &mut actix_web::dev::Payload) -> Self::Future {
         let req = req.clone();
         Box::pin(async move {
-            let token = extract_token(&req);
-            Ok(BearerToken(token))
+            let token = extract_bearer_token(&req);
+            match token {
+                Some(token) => Ok(BearerToken(token)),
+                None => Err(actix_web::error::ErrorForbidden("Forbidden")),
+            }
         })
     }
 }
@@ -35,7 +38,7 @@ impl FromRequest for AccessTokenDecoded {
     fn from_request(req: &actix_web::HttpRequest, _: &mut actix_web::dev::Payload) -> Self::Future {
         let req = req.clone();
         Box::pin(async move {
-            match extract_token(&req) {
+            match extract_bearer_token(&req) {
                 Some(token) => {
                     let claims = decode_access_token(&token);
                     match claims {
@@ -58,7 +61,7 @@ impl FromRequest for RefreshTokenDecoded {
     fn from_request(req: &actix_web::HttpRequest, _: &mut actix_web::dev::Payload) -> Self::Future {
         let req = req.clone();
         Box::pin(async move {
-            match extract_token(&req) {
+            match extract_bearer_token(&req) {
                 Some(token) => {
                     let claims = decode_refresh_token(&token);
                     match claims {
@@ -72,7 +75,7 @@ impl FromRequest for RefreshTokenDecoded {
     }
 }
 
-fn extract_token(req: &actix_web::HttpRequest) -> Option<String> {
+fn extract_bearer_token(req: &actix_web::HttpRequest) -> Option<String> {
     req.headers()
         .get(header::AUTHORIZATION)
         .and_then(|v| v.to_str().ok())
