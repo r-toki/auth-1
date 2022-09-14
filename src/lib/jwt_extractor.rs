@@ -1,5 +1,5 @@
-use crate::lib::jwt::{Claims, Auth};
 use crate::lib::jwt::{decode_access_token, decode_refresh_token};
+use crate::lib::jwt::{Auth, Claims};
 use actix_web::{http::header, FromRequest};
 use anyhow::Result;
 use lazy_static::lazy_static;

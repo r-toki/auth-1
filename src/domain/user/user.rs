@@ -42,6 +42,7 @@ impl User {
         hashed_refresh_token: Option<String>,
     ) -> anyhow::Result<()> {
         self.hashed_refresh_token = hashed_refresh_token;
+        self.updated_at = Utc::now();
         self.validate()?;
         Ok(())
     }
